@@ -5,10 +5,12 @@ class CreateAuthorizationCodes < ActiveRecord::Migration[6.0]
       t.string :scope
       t.string :redirect_uri, null: false
       t.string :state, null: false
-      t.references :client, null: false, foreign_key: true
+      t.string :client_id, null: false
       t.references :user, null: false, foreign_key: true
 
       t.timestamps
     end
+    add_foreign_key :authorization_codes, :clients
+    add_index :authorization_codes, :client_id
   end
 end

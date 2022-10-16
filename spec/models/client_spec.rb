@@ -2,53 +2,18 @@ require 'rails_helper'
 
 RSpec.describe Client, type: :model do
   it "有効な状態をもつ" do 
-    uuid = Client.new_uuid
-    secret = Client.new_secret
-    client = Client.new(
-      uuid: uuid,
-      secret: secret,
-    )
+    client = Client.new(secret: Client.new_secret)
     expect(client).to be_valid
   end
 
-  it "uuidが空文字ならば無効である" do
-    secret = Client.new_secret 
-    client = Client.new(
-      uuid: "   ",
-      secret: secret,
-    )
-    expect(client).to_not be_valid
-  end
-
-  it "uuidが既に登録されていれば無効である" do
-    other_client = Client.create(
-      uuid: Client.new_uuid,
-      secret: Client.new_secret,
-    )
-    client = Client.new(
-      uuid: other_client.uuid,
-      secret: Client.new_secret,
-    )
-    expect(client).to_not be_valid
-  end
-
   it "secretが正しければ認証される" do
-    uuid = Client.new_uuid
     secret = Client.new_secret
-    client = Client.new(
-      uuid: uuid,
-      secret: secret,
-    )
+    client = Client.new(secret: secret)
     expect(client.authenticated?(secret)).to be_truthy
   end
 
   it "secretが間違っていれば認証されない" do 
-    uuid = Client.new_uuid
-    secret = Client.new_secret
-    client = Client.new(
-      uuid: uuid,
-      secret: secret,
-    )
+    client = Client.new(secret: Client.new_secret)
     expect(client.authenticated?("wrong secret")).to be_falsy
   end
 end
