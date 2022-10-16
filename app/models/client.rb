@@ -19,7 +19,7 @@ class Client < ApplicationRecord
   end
 
   def authenticated?(secret)
-    BCrypt::Password.new(secret_digest).is_password?(secret)
+    BCrypt::Password.new(secret_digest) == secret
   end
 
   private
