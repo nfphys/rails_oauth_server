@@ -1,3 +1,6 @@
 <section class="section">
   <h1 class="title">ホーム</h1>
+  <h2 class="subtitle">
+    <%= session[:user_id] ? "Logged In" : "Not Logged In" %>
+  </h2>
 </section>

@@ -17,6 +17,40 @@
       <a class="navbar-item" href="/">
         OAuthServer 
       </a>
+
+      <button class="navbar-burger is-active" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <div class="navbar-menu is-active">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <% if session[:user_id] %>
+              <%= 
+                button_to(
+                  "ログアウト", 
+                  session_path, 
+                  method: "delete",
+                  class: :button
+                ) 
+              %>
+            <% else %>
+              <%= 
+                button_to(
+                  "ログイン", 
+                  new_session_path, 
+                  method: "get",
+                  class: :button
+                ) 
+              %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 
