@@ -11,6 +11,27 @@ RSpec.describe Client, type: :model do
     expect(client).to be_valid
   end
 
+  it "uuidが空文字ならば無効である" do
+    secret = Client.new_secret 
+    client = Client.new(
+      uuid: "   ",
+      secret: secret,
+    )
+    expect(client).to_not be_valid
+  end
+
+  it "uuidが既に登録されていれば無効である" do
+    other_client = Client.create(
+      uuid: Client.new_uuid,
+      secret: Client.new_secret,
+    )
+    client = Client.new(
+      uuid: other_client.uuid,
+      secret: Client.new_secret,
+    )
+    expect(client).to_not be_valid
+  end
+
   it "secretが正しければ認証される" do
     uuid = Client.new_uuid
     secret = Client.new_secret

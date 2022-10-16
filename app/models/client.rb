@@ -1,6 +1,7 @@
 class Client < ApplicationRecord
   has_many :redirect_uris, class_name: "ClientRedirectUri"
   has_many :authorization_codes
+  validates :uuid, presence: true, uniqueness: true
   validates :secret_digest, presence: true
 
   def self.digest(string)
