@@ -16,4 +16,11 @@ RSpec.describe Client, type: :model do
     client = Client.new(secret: Client.new_secret)
     expect(client.authenticated?("wrong secret")).to be_falsy
   end
+
+  it "redirect_uriを追加できる" do
+    client = Client.create(secret: Client.new_secret)
+    expect {
+      client.redirect_uris.create(uri: "http://example.com")
+    }.to change(client.redirect_uris, :count).by(1)
+  end
 end
