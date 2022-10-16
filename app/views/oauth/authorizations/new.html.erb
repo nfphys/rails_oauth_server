@@ -1,7 +1,7 @@
 <section class="section">
   <h1 class="title">Approve this client?</h1>
-  <h2 class="subtitle">ID: <%= @client.uuid %></h2>
-  
+  <h2 class="subtitle">ID: <%= @client.id %></h2>
+
   <%= form_with url: oauth_authorizations_path, model: @authorization_code do |f| %>
     <%= f.text_field :redirect_uri, type: :hidden, value: @authorization_code.redirect_uri %>
     <%= f.text_field :state, type: :hidden, value: @authorization_code.state %>

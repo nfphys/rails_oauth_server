@@ -2,7 +2,7 @@ class Oauth::AuthorizationsController < ApplicationController
   skip_before_action :authenticate
 
   def new
-    @client = Client.find_by(uuid: params[:client_id])
+    @client = Client.find_by(id: params[:client_id])
     if !@client 
       redirect_to root_path
       return
