@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 2022_10_16_070353) do
   end
 
   create_table "clients", force: :cascade do |t|
-    t.string "client_id", null: false
-    t.string "client_secret_digest", null: false
+    t.string "uuid", null: false
+    t.string "secret_digest", null: false
     t.string "scope"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

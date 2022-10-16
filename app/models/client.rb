@@ -1,6 +1,6 @@
 class Client < ApplicationRecord
   has_many :redirect_uris, class_name: "ClientRedirectUri", foreign_key: "client_id"
-  validates :client_secret_digest, presence: true
+  validates :secret_digest, presence: true
 
   def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? 
@@ -10,7 +10,7 @@ class Client < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
 
-  def self.new_id
+  def self.new_uuid
     SecureRandom.uuid
   end
 
@@ -18,14 +18,14 @@ class Client < ApplicationRecord
     SecureRandom.hex(64)
   end
 
-  def initialize(client_id:, client_secret:)
+  def initialize(uuid:, secret:)
     super(
-      client_id: client_id,
-      client_secret_digest: self.class.digest(client_secret),
+      uuid: uuid,
+      secret_digest: self.class.digest(secret),
     )
   end
 
-  def authenticated?(client_secret)
-    BCrypt::Password.new(client_secret_digest) == client_secret
+  def authenticated?(secret)
+    BCrypt::Password.new(secret_digest) == secret
   end
 end
