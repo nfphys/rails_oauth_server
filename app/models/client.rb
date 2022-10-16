@@ -1,6 +1,7 @@
 class Client < ApplicationRecord
   has_many :redirect_uris, class_name: "ClientRedirectUri"
   has_many :authorization_codes
+  before_create :set_uuid
   validates :secret_digest, presence: true
 
   def self.digest(string)
@@ -26,4 +27,12 @@ class Client < ApplicationRecord
   def authenticated?(secret)
     BCrypt::Password.new(secret_digest) == secret
   end
+
+  private 
+
+    def set_uuid 
+      while self.id.blank? || self.class.find_by(id: self.id).present?
+        self.id = self.class.new_uuid
+      end
+    end
 end
