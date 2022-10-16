@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_16_070353) do
+ActiveRecord::Schema.define(version: 2022_10_16_080045) do
+
+  create_table "authorization_codes", force: :cascade do |t|
+    t.string "code_digest", null: false
+    t.string "scope"
+    t.string "redirect_uri", null: false
+    t.string "state", null: false
+    t.integer "client_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["client_id"], name: "index_authorization_codes_on_client_id"
+    t.index ["user_id"], name: "index_authorization_codes_on_user_id"
+  end
 
   create_table "client_redirect_uris", force: :cascade do |t|
     t.string "uri", null: false
@@ -35,5 +48,7 @@ ActiveRecord::Schema.define(version: 2022_10_16_070353) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "authorization_codes", "clients"
+  add_foreign_key "authorization_codes", "users"
   add_foreign_key "client_redirect_uris", "clients"
 end
