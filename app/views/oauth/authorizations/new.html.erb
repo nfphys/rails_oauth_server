@@ -1,3 +1,19 @@
 <section class="section">
-  <h1 class="title">OAuth Authorization Endpoint</h1>
+  <h1 class="title">Approve this client?</h1>
+  <h2 class="subtitle">ID: <%= @client.uuid %></h2>
+  
+  <%= form_with url: oauth_authorizations_path, model: @authorization_code do |f| %>
+    <%= f.text_field :redirect_uri, type: :hidden, value: @authorization_code.redirect_uri %>
+    <%= f.text_field :state, type: :hidden, value: @authorization_code.state %>
+    <%= f.number_field :client_id, type: :hidden, value: @authorization_code.client_id %>
+    <%= f.number_field :user_id, type: :hidden, value: @authorization_code.user_id %>
+    <div class="field is-grouped">
+      <div class="control">
+        <%= f.submit "Approve", value: "Approve", class: "button" %>
+      </div>
+      <div class="control">
+        <%= f.submit "Deny", value: "Deny", class: "button" %>
+      </div>
+    </div>
+  <% end %>
 </section>
