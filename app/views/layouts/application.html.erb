@@ -29,7 +29,7 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <% if session[:user_id] %>
+            <% if logged_in? %>
               <%= 
                 button_to(
                   "ログアウト", 
@@ -40,10 +40,9 @@
               %>
             <% else %>
               <%= 
-                button_to(
+                link_to(
                   "ログイン", 
                   new_session_path, 
-                  method: "get",
                   class: :button
                 ) 
               %>
