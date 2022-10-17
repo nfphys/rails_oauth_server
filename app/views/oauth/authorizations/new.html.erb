@@ -9,10 +9,10 @@
     <%= f.number_field :user_id, type: :hidden, value: @authorization_code.user_id %>
     <div class="field is-grouped">
       <div class="control">
-        <%= f.submit "Approve", value: "Approve", class: "button" %>
+        <%= f.submit "Approve", name: "approve", value: "Approve", class: "button" %>
       </div>
       <div class="control">
-        <%= f.submit "Deny", value: "Deny", class: "button" %>
+        <%= f.submit "Deny", name: "deny", value: "Deny", class: "button" %>
       </div>
     </div>
   <% end %>
