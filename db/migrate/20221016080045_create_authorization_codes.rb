@@ -1,7 +1,7 @@
 class CreateAuthorizationCodes < ActiveRecord::Migration[6.0]
   def change
     create_table :authorization_codes do |t|
-      t.string :code_digest, null: false
+      t.string :code, null: false
       t.string :scope
       t.string :redirect_uri, null: false
       t.string :state, null: false
@@ -12,5 +12,6 @@ class CreateAuthorizationCodes < ActiveRecord::Migration[6.0]
     end
     add_foreign_key :authorization_codes, :clients
     add_index :authorization_codes, :client_id
+    add_index :authorization_codes, :code
   end
 end

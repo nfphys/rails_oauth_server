@@ -40,17 +40,16 @@ class Oauth::AuthorizationsController < ApplicationController
     end
 
     # authorization code を発行
-    code = SecureRandom.urlsafe_base64
     authorization_code = AuthorizationCode.create(
       authorization_code_params.merge({
-        code_digest: AuthorizationCode.digest(code)
+        code: AuthorizationCode.new_code
       })
     )
 
     uri = URI.parse(authorization_code_params[:redirect_uri])
     uri.query = URI.encode_www_form({
-      code: code,
-      state: authorization_code_params[:state],
+      code: authorization_code.code,
+      state: authorization_code.state,
     })
     redirect_to uri.to_s
   end

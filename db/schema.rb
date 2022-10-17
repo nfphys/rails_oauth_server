@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 2022_10_16_080045) do
 
   create_table "authorization_codes", force: :cascade do |t|
-    t.string "code_digest", null: false
+    t.string "code", null: false
     t.string "scope"
     t.string "redirect_uri", null: false
     t.string "state", null: false
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2022_10_16_080045) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["client_id"], name: "index_authorization_codes_on_client_id"
+    t.index ["code"], name: "index_authorization_codes_on_code"
     t.index ["user_id"], name: "index_authorization_codes_on_user_id"
   end
 

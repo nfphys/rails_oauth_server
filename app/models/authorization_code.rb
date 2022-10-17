@@ -2,11 +2,7 @@ class AuthorizationCode < ApplicationRecord
   belongs_to :client
   belongs_to :user
 
-  def self.digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? 
-      BCrypt::Engine::MIN_COST :
-      BCrypt::Engine.cost
-
-    BCrypt::Password.create(string, cost: cost)
+  def self.new_code
+    SecureRandom.urlsafe_base64
   end
 end
