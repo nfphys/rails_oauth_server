@@ -4,5 +4,6 @@ Rails.application.routes.draw do
 
   namespace :oauth do 
     resources :authorizations, only: [:new, :create]
+    resources :tokens, only: [:create]
   end
 end
