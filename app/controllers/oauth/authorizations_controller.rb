@@ -3,12 +3,10 @@ class Oauth::AuthorizationsController < ApplicationController
 
   def new
     @client = Client.find_by(id: params[:client_id])
-    if !@client 
-      uri = URI.parse(params[:redirect_uri])
-      uri.query = URI.encode_www_form({
-        error: 'access denied'
-      })
-      redirect_to uri.to_s
+    unless @client && @client.redirect_uris.find_by(uri: params[:redirect_uri])
+      @error_message = 'Invalid Client'
+      render 'oauth/authorizations/error'
+      return
     end
 
     @authorization_code = AuthorizationCode.new(
@@ -21,12 +19,10 @@ class Oauth::AuthorizationsController < ApplicationController
 
   def create
     @client = Client.find_by(id: authorization_code_params[:client_id])
-    if !@client 
-      uri = URI.parse(authorization_code_params[:redirect_uri])
-      uri.query = URI.encode_www_form({
-        error: 'access denied'
-      })
-      redirect_to uri.to_s
+    unless @client && @client.redirect_uris.find_by(uri: authorization_code_params[:redirect_uri])
+      @error_message = 'Invalid Client'
+      render 'oauth/authorizations/error'
+      return
     end
 
     # ユーザーに承認されなかった場合の処理
