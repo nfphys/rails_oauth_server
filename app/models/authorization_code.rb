@@ -8,4 +8,9 @@ class AuthorizationCode < ApplicationRecord
   def self.new_code
     SecureRandom.urlsafe_base64
   end
+
+  def initialize(params)
+    params[:code] ||= self.class.new_code
+    super(params)
+  end
 end
