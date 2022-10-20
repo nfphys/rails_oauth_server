@@ -1,13 +1,14 @@
 class Oauth::TokensController < ApplicationController
   skip_before_action :authenticate
+  skip_before_action :verify_authenticity_token, only: [:create]
 
   def create
     # ヘッダに client_credentials が含まれるかどうかを検証
     auth_header = request.headers['authorization']
     if auth_header
       client_credentials = decode_client_credentials(auth_header)
-      client_id = client_credentials.id
-      client_secret = client_credentials.secret
+      client_id = client_credentials[:id]
+      client_secret = client_credentials[:secret]
     end
 
     # ボディに client_credentials が含まれるかどうかを検証
@@ -23,7 +24,7 @@ class Oauth::TokensController < ApplicationController
 
     # client_credentials が正しいかどうかを検証
     client = Client.find_by(id: client_id)
-    if !client || client.authenticated?(client_secret)
+    unless client && client.authenticated?(client_secret)
       render json: { error: 'invalid client' }, status: :unauthorized
       return
     end
@@ -45,8 +46,16 @@ class Oauth::TokensController < ApplicationController
       end
 
       # アクセス・トークンを生成
-      # to do
+      access_token = client.access_tokens.create(
+        scope: authorization_code.scope,
+        user_id: authorization_code.user_id
+      )
 
+      render json: {
+        access_token: access_token.token,
+        token_type: 'Bearer'
+      }, status: :ok
+      return
     else
       render json: { error: 'unsupported grant type' }, status: :bad_request
       return
