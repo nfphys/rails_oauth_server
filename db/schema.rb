@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_16_080045) do
+ActiveRecord::Schema.define(version: 2022_10_20_082443) do
+
+  create_table "access_tokens", force: :cascade do |t|
+    t.string "token", null: false
+    t.string "scope"
+    t.datetime "expires_at", null: false
+    t.string "client_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["client_id"], name: "index_access_tokens_on_client_id"
+    t.index ["user_id"], name: "index_access_tokens_on_user_id"
+  end
 
   create_table "authorization_codes", force: :cascade do |t|
     t.string "code", null: false
@@ -48,6 +60,8 @@ ActiveRecord::Schema.define(version: 2022_10_16_080045) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "access_tokens", "clients"
+  add_foreign_key "access_tokens", "users"
   add_foreign_key "authorization_codes", "clients"
   add_foreign_key "authorization_codes", "users"
   add_foreign_key "client_redirect_uris", "clients"
