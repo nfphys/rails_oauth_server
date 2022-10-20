@@ -66,7 +66,7 @@ class Oauth::TokensController < ApplicationController
 
     # Authorization ヘッダから client_id と client_secret を取り出す
     def decode_client_credentials(auth_header)
-      client_credentials = auth_header[('basic '.length)..].split(":")
+      client_credentials = Base64.decode64(auth_header[('basic '.length)..]).split(":")
       client_id = client_credentials[0]
       client_secret = client_credentials[1]
       { id: client_id, secret: client_secret }
